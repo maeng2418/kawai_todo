@@ -38,7 +38,14 @@ export default class App extends React.Component {
           />
           {/*스크롤뷰는 자동으로 행으로 생성*/}
           <ScrollView contentContainerStyle={styles.toDos}> 
-            {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo}/>)}
+            {Object.values(toDos).map(toDo => (
+            <ToDo 
+              key={toDo.id} 
+              {...toDo} 
+              deleteToDo={this._deleteToDo}
+              uncompleteToDo={this._uncompleteTodo}
+              completeToDo={this._completeToDo}
+              />))}
           </ScrollView>
         </View>
       </View>
@@ -91,7 +98,37 @@ export default class App extends React.Component {
       }
       return {...newState}
     })
-  }
+  };
+  _uncompleteTodo = (id) => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id], //기존id객체 유지
+            isCompleted:false //이전에 있던거에 isCompleted 변경
+          }
+        }
+      };
+      return {...newState}
+    });
+  };
+  _completeToDo = (id) => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id], //기존id객체 유지
+            isCompleted:true //이전에 있던거에 isCompleted 변경
+          }
+        }
+      };
+      return {...newState}
+    });
+  };
 }
 
 const styles = StyleSheet.create({
