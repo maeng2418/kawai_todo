@@ -25,7 +25,7 @@ export default class Todo extends Component {
     
     render() {
         const { isEditing, toDoValue } = this.state;
-        const { text, id, deleteToDo,  isCompleted} = this.props; //appjs에서 completed or uncompleted되고, state가 아니라 props에서 iscompleted를 가져옴.
+        const { text, id, deleteToDo,  isCompleted} = this.props; //app.js에서 completed or uncompleted되고, state가 아니라 props에서 iscompleted를 가져옴.
         return (
             <View style={styles.container}>
                 <View style={styles.column}>

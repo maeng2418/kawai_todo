@@ -122,7 +122,7 @@ export default class App extends React.Component {
           ...prevState.toDos,
           [id]: {
             ...prevState.toDos[id], //기존id객체 유지
-            isCompleted:true //이전에 있던거에 isCompleted 변경
+            isCompleted:true //이전에 있던거에 isCompleted 변경.
           }
         }
       };
