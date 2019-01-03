@@ -3,61 +3,82 @@ import { View, Text, TouchableOpacity, Dimensions, StyleSheet, TextInput } from 
 
 const { width, height } = Dimensions.get("window");
 
-export default class Todo extends Component{
+export default class Todo extends Component {
     state = {
         isEditing: false,
         isCompleted: false,
         toDoValue: ""
     };
-    render(){
-        const {isCompleted, isEditing, toDoValue} = this.state;
-        const {text} = this.props;
-        return(
-        <View style={styles.container}>
-            <View style={styles.column}>
-                <TouchableOpacity onPress={this._toggleComplete}>
-                    <View style={[styles.circle, isCompleted ? styles.completedCircle : styles.uncompletedCircle]}/>
-                </TouchableOpacity>
-                {isEditing ? (<TextInput style={[styles.text, styles.input]} value={toDoValue} multiline={true} onChangeText={this._controlInput} returnKeyType={"done"} onBlur={this._finishEditing}/>) : (<Text style={[styles.text, isCompleted? styles.completedText : styles.uncompletedText]}>{text}</Text>)}
-            </View>
-                {isEditing ? (
-                    <View style={styles.actions}>
-                        <TouchableOpacity onPressOut={this._finishEditing}>
-                            <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>✅</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                ) : (
-                    <View style={styles.actions}>
-                        <TouchableOpacity onPressOut={this._startEditing}>
-                            <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>✏</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>❌</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                )}
+    render() {
+        const { isCompleted, isEditing, toDoValue } = this.state;
+        const { text } = this.props;
+        return (
+            <View style={styles.container}>
+                <View style={styles.column}>
+                    <TouchableOpacity onPress={this._toggleComplete}>
+                        <View style={[styles.circle, isCompleted ? styles.completedCircle : styles.uncompletedCircle]} />
+                    </TouchableOpacity>
+                    {isEditing ?
+                        (
+                            <TextInput
+                                style={[styles.text, styles.input, isCompleted ? styles.completedText : styles.uncompletedText]}
+                                value={toDoValue} //기본값이 기존에 있던 내용.
+                                multiline={true}
+                                onChangeText={this._controlInput} //텍스트가 변화하면 텍스트를 변화시켜줌.
+                                returnKeyType={"done"}
+                                onBlur={this._finishEditing}
+                            />
+                        ) :
+                        (
+                            <Text style={[styles.text, isCompleted ?
+                                styles.completedText :
+                                styles.uncompletedText]}>
+                                {text}
+                            </Text>
+                        )
+                    }
+                </View>
+                {isEditing ?
+                    (
+                        <View style={styles.actions}>
+                            <TouchableOpacity onPressOut={this._finishEditing}>
+                                <View style={styles.actionContainer}>
+                                    <Text style={styles.actionText}>✅</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    ) :
+                    (
+                        <View style={styles.actions}>
+                            <TouchableOpacity onPressOut={this._startEditing}>
+                                <View style={styles.actionContainer}>
+                                    <Text style={styles.actionText}>✏</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.actionContainer}>
+                                    <Text style={styles.actionText}>❌</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
             </View>
         );
     }
-    _toggleComplete = () =>{
-        this.setState(prevState =>{
+    _toggleComplete = () => {
+        this.setState(prevState => {
             return {
                 isCompleted: !prevState.isCompleted
             };
         });
     };
 
-    _startEditing =() => {
+    _startEditing = () => {
         const { text } = this.props;
         this.setState({
             isEditing: true,
-            toDoValue: text
+            toDoValue: text //기존에 있던 내용을 수정시에 일단 가지고 옴.
         });
     };
 
@@ -69,21 +90,21 @@ export default class Todo extends Component{
 
     _controlInput = (text) => {
         this.setState({
-            toDoValue: text
+            toDoValue: text //텍스트가 발생하면 텍스트로 toDoValue를 변화시킴.
         })
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: width -50,
+        width: width - 50,
         borderBottomColor: "#bbb",
         borderBottomWidth: StyleSheet.hairlineWidth,
         flexDirection: "row", //옆에
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "space-between"
     },
-    circle:{
+    circle: {
         width: 30,
         height: 30,
         borderRadius: 25,
@@ -91,10 +112,10 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         marginRight: 20
     },
-    completedCircle:{
+    completedCircle: {
         borderColor: "#bbb"
     },
-    uncompletedCircle:{
+    uncompletedCircle: {
         borderColor: "#F23657" //빨간색
     },
     text: {
@@ -102,17 +123,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginVertical: 20
     },
-    completedText:{
+    completedText: {
         color: "#bbb",
         textDecorationLine: "line-through"
     },
-    uncompletedText:{
+    uncompletedText: {
         color: "#353839"
     },
     column: {
         flexDirection: "row",
         alignItems: "center",
-        width: width/2,
+        width: width / 2,
         justifyContent: "space-between"
     },
     actions: {
@@ -122,8 +143,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginHorizontal: 10
     },
-    input:{
-        width: width/2,
-        marginVertical: 15
+    input: {
+        width: width / 2,
+        marginVertical: 15,
+        paddingBottom: 5
     }
 });
