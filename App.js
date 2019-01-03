@@ -9,13 +9,15 @@ const { height, width } = Dimensions.get("window");
 export default class App extends React.Component {
   state = {
     newToDo: "",
-    loadedToDos: false
+    loadedToDos: false,
+    toDos:{}
   };
   componentDidMount = () => {
     this._loadToDos();
   }
   render() {
-    const { newToDo, loadedToDos } = this.state;
+    const { newToDo, loadedToDos, toDos } = this.state;
+    console.log(toDos)
     if (!loadedToDos) {
       return <AppLoading />
     }
@@ -34,8 +36,9 @@ export default class App extends React.Component {
             autoCorrect={false} //자동완성.
             onSubmitEditing={this._addToDo}
           />
-          <ScrollView contentContainerStyle={styles.toDos}>
-            <ToDo text={"Hello I'm a To Do"} />
+          {/*스크롤뷰는 자동으로 행으로 생성*/}
+          <ScrollView contentContainerStyle={styles.toDos}> 
+            {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo}/>)}
           </ScrollView>
         </View>
       </View>
@@ -74,9 +77,20 @@ export default class App extends React.Component {
             ...newToDoObject
           }
         };
-        return {...newState}
-      })
+        return {...newState};
+      });
     }
+  };
+  _deleteToDo = (id) => {
+    this.setState(prevState => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos
+      }
+      return {...newState}
+    })
   }
 }
 
