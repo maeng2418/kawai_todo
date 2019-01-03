@@ -45,6 +45,7 @@ export default class App extends React.Component {
               deleteToDo={this._deleteToDo}
               uncompleteToDo={this._uncompleteTodo}
               completeToDo={this._completeToDo}
+              updateToDo={this._updateToDo}
               />))}
           </ScrollView>
         </View>
@@ -129,6 +130,22 @@ export default class App extends React.Component {
       return {...newState}
     });
   };
+  _updateToDo = (id, text) => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id], //기존id객체 유지
+            text:text //이전에 있던거에 text변경
+          }
+        }
+      };
+      return {...newState}
+    });
+  };
+
 }
 
 const styles = StyleSheet.create({
